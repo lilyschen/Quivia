@@ -30,6 +30,7 @@ const QuizGame = ({ studySetId }) => {
       setGameCompleted(false); // Reset game completion state
       setCurrentQuestionIndex(0); // Reset question index
       setQuestions([]); // Clear questions array (this is optional, depending on your logic)
+      setCorrectAnswers(0);
       
       if (!user?.sub) {
         throw new Error('User must be logged in to start a quiz');
