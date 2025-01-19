@@ -23,14 +23,14 @@ body {
 
 /* Root Variables */
 :root {
-  --primary: #e0f6f9;
-  --secondary: #41cde0;
+  --primary: #FFB6C1;
+  --secondary: #FFB6C1;
   --heading-color: #181826;
   --bg-shade: #f9f9f9;
   --black: #000000;
   --white: #ffffff;
-  --highlight: #007bff;
-  --highlight-hover: #0056b3;
+  --highlight: #FF69B4;
+  --highlight-hover: #FF69B4;
 }
 
 /* Overlay Container */
@@ -128,7 +128,9 @@ nav .logo-container .logo {
   font-size: 3rem;
   color: var(--heading-color);
   line-height: 90px;
-  letter-spacing: 10px;
+  letter-spacing: 6px;
+  text-align: center; /* Center text horizontally */
+  margin: 0 auto; /* Center the element itself */
 }
 
 .subtitle {

@@ -2,11 +2,11 @@ import React from "react";
 
 const DefinitionBox = () => (
   <div className="definition-box">
-    <h1 className="heading">Yada</h1>
+    <h1 className="heading">Quivia</h1>
     <p className="definition-small">
-      /yaa-da/ | noun (punjabi) <br />
+    kwˈɪviə | noun <br />
     </p>
-    <p className="definition-large">memory</p>
+    <p className="definition-large">quiz + trivia!</p>
   </div>
 );
 
