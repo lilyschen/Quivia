@@ -1,31 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from 'react-router-dom';
-import { Trophy, Share2, Loader2 } from 'lucide-react';
+import { Trophy, Loader2 } from 'lucide-react';
 
-const QuizGame = ({ studySetId, shareableId }) => {
+const QuizGame = ({ studySetId }) => {
   const [gameSession, setGameSession] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [gameCompleted, setGameCompleted] = useState(false);
-  const [shareUrl, setShareUrl] = useState('');
   const { user } = useAuth0();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Log the props to verify what we're receiving
-    console.log('QuizGame props:', { studySetId, shareableId });
-    
-    if (!studySetId && !shareableId) {
-      setError('No study set ID or shareable ID provided');
+    if (!studySetId) {
+      setError('No study set ID provided');
       setLoading(false);
       return;
     }
-
     startNewGame();
-  }, [studySetId, shareableId]);
+  }, [studySetId]);
 
   const startNewGame = async () => {
     try {
@@ -36,29 +31,18 @@ const QuizGame = ({ studySetId, shareableId }) => {
         throw new Error('User must be logged in to start a quiz');
       }
 
-      const payload = {
-        user: { sub: user.sub }
-      };
-
-      // Add either studySetId or shareableId to the payload
-      if (studySetId) {
-        payload.studySetId = studySetId;
-      } else if (shareableId) {
-        payload.shareableId = shareableId;
-      }
-
-      console.log('Starting quiz with payload:', payload); // Debug log
-      
       const response = await fetch('http://localhost:3000/start-quiz-mode', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+          user: { sub: user.sub },
+          studySetId: studySetId
+        })
       });
 
       const data = await response.json();
-      console.log('Quiz start response:', data); // Debug log
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to start quiz');
@@ -70,7 +54,6 @@ const QuizGame = ({ studySetId, shareableId }) => {
 
       setGameSession(data.gameSession);
       setQuestions(data.questions);
-      setShareUrl(`${window.location.origin}/quiz/share/${data.shareableId}`);
     } catch (error) {
       console.error('Error starting quiz:', error);
       setError(error.message);
@@ -90,12 +73,6 @@ const QuizGame = ({ studySetId, shareableId }) => {
         throw new Error('Invalid question index');
       }
 
-      console.log('Submitting answer:', { 
-        gameSessionId: gameSession,
-        questionId: currentQuestion.id,
-        answer: selectedAnswer 
-      }); // Debug log
-
       const response = await fetch('http://localhost:3000/submit-quiz-answer', {
         method: 'POST',
         headers: {
@@ -109,7 +86,6 @@ const QuizGame = ({ studySetId, shareableId }) => {
       });
 
       const data = await response.json();
-      console.log('Answer submission response:', data); // Debug log
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to submit answer');
@@ -128,31 +104,21 @@ const QuizGame = ({ studySetId, shareableId }) => {
     }
   };
 
-  const handleShare = async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      alert('Quiz link copied to clipboard!');
-    } catch (err) {
-      console.error('Failed to copy:', err);
-      setError('Failed to copy link to clipboard');
-    }
-  };
-
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <Loader2 className="h-8 w-8 animate-spin text-pink-500" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl mx-auto">
-        <div className="text-red-500 mb-4">Error: {error}</div>
+      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-2xl mx-auto">
+        <div className="text-red-500 mb-6 text-center font-medium">{error}</div>
         <button 
           onClick={startNewGame}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="w-full px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors font-medium"
         >
           Try Again
         </button>
@@ -162,11 +128,11 @@ const QuizGame = ({ studySetId, shareableId }) => {
 
   if (!questions || questions.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl mx-auto">
-        <div className="text-gray-500 mb-4">No questions available for this study set</div>
+      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-2xl mx-auto">
+        <div className="text-gray-600 mb-6 text-center">No questions available for this study set</div>
         <button 
           onClick={startNewGame}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="w-full px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors font-medium"
         >
           Try Again
         </button>
@@ -176,29 +142,20 @@ const QuizGame = ({ studySetId, shareableId }) => {
 
   if (gameCompleted) {
     return (
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl mx-auto">
-        <div className="mb-4">
-          <div className="flex items-center gap-2 text-xl font-bold">
-            <Trophy className="h-6 w-6 text-yellow-500" />
+      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-2xl mx-auto">
+        <div className="mb-8">
+          <div className="flex items-center justify-center gap-3 text-2xl font-bold text-pink-500">
+            <Trophy className="h-8 w-8" />
             Quiz Completed!
           </div>
         </div>
-        <div className="py-4">
-          <p className="text-lg mb-4">
+        <div className="text-center">
+          <p className="text-xl mb-8 text-gray-700">
             Your final score: {questions.length} out of {questions.length}
           </p>
-          <button
-            onClick={handleShare}
-            className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            <Share2 className="h-4 w-4" />
-            Share Quiz
-          </button>
-        </div>
-        <div className="pt-4 border-t">
           <button 
             onClick={startNewGame}
-            className="px-4 py-2 border rounded hover:bg-gray-50"
+            className="px-8 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors font-medium"
           >
             Play Again
           </button>
@@ -213,28 +170,26 @@ const QuizGame = ({ studySetId, shareableId }) => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl mx-auto">
-      <div className="mb-4">
-        <h2 className="text-xl font-bold">
-          Question {currentQuestionIndex + 1} of {questions.length}
-        </h2>
-      </div>
-      <div className="space-y-6">
-        <p className="text-lg font-medium">{currentQuestion.question}</p>
-        <div className="grid gap-3">
-          {currentQuestion.options.map((option, index) => (
-            <button
-              key={index}
-              className="w-full text-left px-4 py-2 border rounded hover:bg-gray-50"
-              onClick={() => handleAnswerSubmit(option)}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      </div>
+    <div className="quiz-container">
+    <h2 className="question-text text-center">
+        Question {currentQuestionIndex + 1} of {questions.length}
+    </h2>
+    <p className="question mb-8 text-center">{currentQuestion.question}</p>
+    <div className="options-container flex flex-col gap-4 items-center justify-center">
+        {currentQuestion.options.map((option, index) => (
+        <button
+            key={index}
+            className="option-button w-full text-center px-6 py-4 border-2 border-gray-200 rounded-lg hover:border-pink-500 hover:bg-pink-50 transition-all duration-200 text-gray-700 font-medium"
+            onClick={() => handleAnswerSubmit(option)}
+        >
+            {option}
+        </button>
+        ))}
     </div>
+    </div>
+
   );
+  
 };
 
 export default QuizGame;

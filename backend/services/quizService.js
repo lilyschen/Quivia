@@ -57,55 +57,60 @@ exports.generateQuizQuestions = async (studySetId) => {
 };
 
 exports.startQuizMode = async (studySetId, userId) => {
-  if (!studySetId || !userId) {
-    throw new Error('Study set ID and user ID are required');
-  }
-
-  // Check if study set exists
-  const studySet = await StudySet.findById(studySetId);
-  if (!studySet) {
-    throw new Error('Study set not found');
-  }
-
-  // Generate or get existing quiz questions
-  let questions = await QuizQuestion.find({ studySetId });
+    if (!studySetId || !userId) {
+      throw new Error('Study set ID and user ID are required');
+    }
   
-  if (questions.length === 0) {
-    questions = await this.generateQuizQuestions(studySetId);
-  }
-
-  if (!questions || questions.length === 0) {
-    throw new Error('Failed to generate quiz questions');
-  }
-
-  // Create a shareable ID
-  const shareableId = crypto.randomBytes(8).toString('hex');
-
-  // Create new game session
-  const gameSession = new GameSession({
-    studySet: studySetId,
-    user: userId,
-    mode: 'quiz',
-    mode_type: 'QuizQuestion',
-    progress: questions.map(q => ({
-      item: q._id,
-      status: 'incorrect',
-      attempts: 0
-    })),
-    shareableId,
-    completed: false,
-    score: 0
-  });
-
-  try {
-    await gameSession.save();
-  } catch (error) {
-    console.error('Error saving game session:', error);
-    throw new Error('Failed to create game session');
-  }
-
-  return { gameSession, questions };
-};
+    // Check if study set exists
+    const studySet = await StudySet.findById(studySetId);
+    if (!studySet) {
+      throw new Error('Study set not found');
+    }
+  
+    // Generate or get existing quiz questions
+    let questions = await QuizQuestion.find({ studySetId });
+    
+    if (questions.length === 0) {
+      questions = await this.generateQuizQuestions(studySetId);
+    }
+  
+    if (!questions || questions.length === 0) {
+      throw new Error('Failed to generate quiz questions');
+    }
+  
+    // Create a shareable ID
+    const shareableId = crypto.randomBytes(8).toString('hex');
+  
+    // Create new game session
+    const gameSession = new GameSession({
+      studySet: studySetId,
+      user: userId,
+      mode: 'quiz',
+      mode_type: 'QuizQuestion',
+      progress: questions.map(q => ({
+        item: q._id,
+        status: 'incorrect',
+        attempts: 0
+      })),
+      shareableId,
+      completed: false,
+      score: 0
+    });
+  
+    try {
+      await gameSession.save();
+    } catch (error) {
+      console.error('Error saving game session:', error);
+      throw new Error('Failed to create game session');
+    }
+  
+    // Return the shareableId along with gameSession and questions
+    return {
+        gameSession,
+        questions,
+        shareableId: gameSession.shareableId
+      };
+  };
 
 exports.submitAnswer = async (gameSessionId, questionId, answer) => {
   const gameSession = await GameSession.findById(gameSessionId);
