@@ -20,4 +20,7 @@ router.put("/update-study-progress", studySetController.updateStudyProgress);
 router.put("/complete-study-session", studySetController.completeStudySession);
 router.get("/study-sessions", studySetController.getStudySessionsForSet);
 
+router.post('/start-quiz-mode', studySetController.startQuizMode);
+router.post('/submit-quiz-answer', studySetController.submitQuizAnswer);
+
 module.exports = router;
