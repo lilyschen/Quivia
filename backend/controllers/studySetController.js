@@ -184,6 +184,7 @@ exports.startQuizMode = async (req, res) => {
         options: q.options,
         correctAnswer: q.correctAnswer
       })),
+      shareableId: result.gameSession.shareableId,
     });
   } catch (error) {
     console.error('Error starting quiz mode:', error);
@@ -200,5 +201,27 @@ exports.submitQuizAnswer = async (req, res) => {
   } catch (error) {
     console.error('Error submitting quiz answer:', error);
     res.status(400).json({ error: error.message });
+  }
+};
+
+exports.loadSharedQuiz = async (req, res) => {
+  try {
+    const { shareableId } = req.params;
+    const quizService = require('../services/quizService');
+    const result = await quizService.loadSharedQuiz(shareableId);
+    
+    // No need for user authentication check for shared quizzes
+    res.status(200).json({
+      gameSession: result.gameSession,  // Send full session object
+      questions: result.questions.map(q => ({
+        id: q._id,
+        question: q.question,
+        options: q.options,
+        correctAnswer: q.correctAnswer  // Include correct answer for client-side checking
+      })),
+    });
+  } catch (error) {
+    console.error('Error loading shared quiz:', error);
+    res.status(404).json({ error: error.message || 'Quiz not found' });
   }
 };

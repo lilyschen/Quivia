@@ -22,5 +22,6 @@ router.get("/study-sessions", studySetController.getStudySessionsForSet);
 
 router.post('/start-quiz-mode', studySetController.startQuizMode);
 router.post('/submit-quiz-answer', studySetController.submitQuizAnswer);
+router.get('/load-shared-quiz/:shareableId', studySetController.loadSharedQuiz);
 
 module.exports = router;
