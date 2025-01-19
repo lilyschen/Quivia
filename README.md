@@ -51,5 +51,6 @@ Quivia allows you to upload your study notes and uses generative AI to create a 
 
 ## Coming soon:
 Harness the power of adrenaline to make studying even more effective with **Scary Mode**!
+
 Keep track of your friends' scores on the **Leaderboard**!
 
