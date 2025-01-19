@@ -197,17 +197,19 @@ const QuizGame = ({ studySetId, shareableId }) => {
             Your final score: {correctAnswers} out of {questions.length}
           </p>
           {!shareableId && (
-            <div className="space-y-4 w-full"> {/* Changed to space-y-4 for vertical spacing */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <button 
                 onClick={startNewGame}
-                className="block w-full px-8 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors font-medium"
+                style={{ width: '100%', marginBottom: '1rem' }}
+                className="px-8 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors font-medium"
               >
                 Play Again
               </button>
               {quizShareableId && (
                 <button 
                   onClick={handleShareQuiz}
-                  className="block w-full px-8 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium flex items-center justify-center gap-2"
+                  style={{ width: '100%', marginBottom: '1rem' }}
+                  className="px-8 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium flex items-center justify-center gap-2"
                 >
                   <Share2 className="h-5 w-5" />
                   Share Quiz
@@ -215,7 +217,8 @@ const QuizGame = ({ studySetId, shareableId }) => {
               )}
               <button 
                 onClick={handleFinishQuiz}
-                className="block w-full px-8 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium flex items-center justify-center gap-2"
+                style={{ width: '100%' }}
+                className="px-8 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium flex items-center justify-center gap-2"
               >
                 <ArrowLeft className="h-5 w-5" />
                 Finish Quiz
