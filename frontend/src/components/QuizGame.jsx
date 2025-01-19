@@ -103,21 +103,27 @@ const QuizGame = ({ studySetId }) => {
       }
 
       console.log('Submitted Answer:', selectedAnswer);
-console.log('Correct Answer:', currentQuestion.correctAnswer);
+      console.log('Correct Answer:', currentQuestion.correctAnswer);
 
-  
+      // Remove focus from all option buttons
+      document.querySelectorAll('.option-button').forEach(button => {
+        button.blur();
+      });
+
+      // Check if quiz is complete and update question index
       if (currentQuestionIndex + 1 >= questions.length) {
         setGameCompleted(true);
       } else {
         setCurrentQuestionIndex(prev => prev + 1);
       }
-  
+
       return data;
+
     } catch (error) {
       console.error('Error submitting answer:', error);
       setError(error.message);
     }
-  };  
+  };
 
   if (loading) {
     return (
