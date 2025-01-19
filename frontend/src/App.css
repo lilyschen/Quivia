@@ -23,14 +23,14 @@ body {
 
 /* Root Variables */
 :root {
-  --primary: #FFB6C1;
-  --secondary: #FFB6C1;
+  --primary: #7784bb;
+  --secondary: #3d5672;
   --heading-color: #181826;
   --bg-shade: #f9f9f9;
   --black: #000000;
   --white: #ffffff;
-  --highlight: #FF69B4;
-  --highlight-hover: #FF69B4;
+  --highlight: #6969d0;
+  --highlight-hover: #697bff;
 }
 
 /* Overlay Container */
@@ -80,7 +80,7 @@ nav .logo-container .logo {
 }
 
 .nav-link:hover {
-  color: #41cde0;
+  color: #3d5672;
 }
 
 /* Homepage Styling */
