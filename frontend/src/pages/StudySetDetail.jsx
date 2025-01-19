@@ -237,6 +237,13 @@ const StudySetDetailPage = () => {
             {showGenerateFlashcardsModal ? "Cancel" : "Generate Flashcards"}
           </button>
 
+          <button 
+            className="btn" 
+            onClick={() => navigate(`/study-set/${studySetId}/quiz`)}
+          >
+            Start Quiz
+          </button>
+
           {showManualFlashcard && (
             <Modal onClose={toggleManualFlashcard}>
               <ManualFlashcard

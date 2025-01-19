@@ -512,3 +512,88 @@ h3 {
   font-size: 24px;
   cursor: pointer;
 }
+
+/* Updated button styles for better user interaction */
+button {
+  transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover Effect on buttons */
+button:hover {
+  transform: scale(1.05);
+  background-color: var(--highlight);
+}
+
+/* Button on hover */
+button:focus, button:hover {
+  background-color: var(--highlight-hover);
+}
+
+/* Enhancing the quiz question text */
+.quiz-question {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--heading-color);
+}
+
+/* Styling for the multiple choice options */
+button {
+  background-color: var(--white);
+  border: 2px solid var(--heading-color);
+  padding: 15px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  color: var(--heading-color);
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--highlight);
+  border-color: var(--highlight);
+  color: white;
+}
+
+.quiz-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px; /* Adjust based on your needs */
+  margin: 0 auto; /* Center the quiz container */
+}
+
+.question-text, .question {
+  text-align: center;
+  font-size: 1.25rem;
+  color: var(--heading-color);
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column; /* Stacks options vertically */
+  gap: 1rem; /* Adds space between options */
+  align-items: center; /* Centers options horizontally */
+}
+
+.option-button {
+  width: 100%;
+  max-width: 400px; /* Set a maximum width for the buttons */
+  padding: 1rem;
+  border: 2px solid var(--heading-color);
+  font-size: 1rem;
+  border-radius: 8px;
+  background-color: var(--white);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.option-button:hover {
+  background-color: var(--highlight);
+  border-color: var(--highlight);
+  color: white;
+  transform: scale(1.05);
+}
