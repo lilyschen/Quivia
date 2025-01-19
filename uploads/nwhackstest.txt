@@ -1,9 +1,0 @@
-Chapter 1: Introduction to Programming
-- Programming is the process of creating a set of instructions that tell a computer how to perform a task.
-- Programming languages are used to write these instructions.
-- Examples of programming languages include Python, JavaScript, and Java.
-
-Chapter 2: Variables and Data Types
-- Variables are used to store data in a program.
-- Data types specify the type of data that a variable can hold.
-- Common data types include integers, floats, strings, and booleans.
