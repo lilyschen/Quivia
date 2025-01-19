@@ -155,3 +155,20 @@ exports.submitAnswer = async (gameSessionId, questionId, answer) => {
     score: gameSession.score
   };
 };
+
+// In quizService.js
+exports.loadSharedQuiz = async (shareableId) => {
+  const gameSession = await GameSession.findOne({ shareableId })
+    .populate('studySet');
+    
+  if (!gameSession) {
+    throw new Error('Quiz not found');
+  }
+
+  const questions = await QuizQuestion.find({ studySetId: gameSession.studySet._id });
+  
+  return {
+    gameSession,
+    questions
+  };
+};

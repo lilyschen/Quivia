@@ -2,7 +2,7 @@
 
 Studying can be a drag, and studying with friends can be unproductive... With **Quivia**, both problems are solved! 
 
-Quivia allows you to upload your study notes and uses generative AI to create a set of questions that you can compete with friends to answer.
+Quivia allows you to upload your study notes and uses generative AI to create a set of flashcards and quizzes that you can compete with friends to answer.
 
 # Project Setup
 ## Set Up the Environment
@@ -51,3 +51,6 @@ Quivia allows you to upload your study notes and uses generative AI to create a 
 
 ## Coming soon:
 Harness the power of adrenaline to make studying even more effective with **Scary Mode**!
+
+Keep track of your friends' scores on the **Leaderboard**!
+
