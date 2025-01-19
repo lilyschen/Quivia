@@ -71,8 +71,9 @@ exports.generateFlashcards = async (req) => {
             {
                 role: 'user',
                 content: `Generate question and answer flashcards from the following notes.
-                          Please include a mix of true/false, fill-in-the-blank, and multiple-choice questions.
+                          Do not include the term in the answer.
                           Format each flashcard as "Q: [Question]" and "A: [Answer]".
+                          For example: question: What color is the sky? answer: Blue (Do not have The sky is blue as the answer).
                           Here are the notes:\n${notes}`
             }
         ],
