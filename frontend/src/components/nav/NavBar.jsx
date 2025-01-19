@@ -10,7 +10,7 @@ const Nav = () => {
     <nav className="navbar">
       <div className="logo-container">
         <Link to="/">
-          <img className="logo" src="/yada-logo.png" alt="Yada logo" />
+          <img className="logo" src="/quivia-logo.png" alt="Quivia logo" />
         </Link>
       </div>
       {isAuthenticated && (

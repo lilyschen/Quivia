@@ -34,7 +34,7 @@ app.use('/', studySetRoutes);
 
 // Routes
 app.get('/', (req, res) => {
-    res.send('Welcome to the YADA API');
+    res.send('Welcome to the Quivia API');
 });
 
 const PORT = process.env.PORT || 3000;
