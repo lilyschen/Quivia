@@ -10,6 +10,7 @@ const QuizGame = ({ studySetId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [gameCompleted, setGameCompleted] = useState(false);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
   const { user } = useAuth0();
   const navigate = useNavigate();
 
@@ -26,11 +27,14 @@ const QuizGame = ({ studySetId }) => {
     try {
       setLoading(true);
       setError(null);
+      setGameCompleted(false); // Reset game completion state
+      setCurrentQuestionIndex(0); // Reset question index
+      setQuestions([]); // Clear questions array (this is optional, depending on your logic)
       
       if (!user?.sub) {
         throw new Error('User must be logged in to start a quiz');
       }
-
+  
       const response = await fetch('http://localhost:3000/start-quiz-mode', {
         method: 'POST',
         headers: {
@@ -41,17 +45,17 @@ const QuizGame = ({ studySetId }) => {
           studySetId: studySetId
         })
       });
-
+  
       const data = await response.json();
-
+  
       if (!response.ok) {
         throw new Error(data.error || 'Failed to start quiz');
       }
-
+  
       if (!data.questions || data.questions.length === 0) {
         throw new Error('No questions available for this study set');
       }
-
+  
       setGameSession(data.gameSession);
       setQuestions(data.questions);
     } catch (error) {
@@ -61,18 +65,19 @@ const QuizGame = ({ studySetId }) => {
       setLoading(false);
     }
   };
-
+  
   const handleAnswerSubmit = async (selectedAnswer) => {
     try {
       if (!gameSession) {
         throw new Error('No active game session');
       }
-
+  
       const currentQuestion = questions[currentQuestionIndex];
+      console.log(currentQuestion)
       if (!currentQuestion) {
         throw new Error('Invalid question index');
       }
-
+  
       const response = await fetch('http://localhost:3000/submit-quiz-answer', {
         method: 'POST',
         headers: {
@@ -84,25 +89,34 @@ const QuizGame = ({ studySetId }) => {
           answer: selectedAnswer
         }),
       });
-
+  
       const data = await response.json();
-
+  
       if (!response.ok) {
         throw new Error(data.error || 'Failed to submit answer');
       }
+  
+      // Ensure the answer comparison is correct
+      if (selectedAnswer === currentQuestion.correctAnswer) {  // Compare selected answer with correct answer
+        setCorrectAnswers(prev => prev + 1);
+      }
 
+      console.log('Submitted Answer:', selectedAnswer);
+console.log('Correct Answer:', currentQuestion.correctAnswer);
+
+  
       if (currentQuestionIndex + 1 >= questions.length) {
         setGameCompleted(true);
       } else {
         setCurrentQuestionIndex(prev => prev + 1);
       }
-
+  
       return data;
     } catch (error) {
       console.error('Error submitting answer:', error);
       setError(error.message);
     }
-  };
+  };  
 
   if (loading) {
     return (
@@ -150,9 +164,9 @@ const QuizGame = ({ studySetId }) => {
           </div>
         </div>
         <div className="text-center">
-          <p className="text-xl mb-8 text-gray-700">
-            Your final score: {questions.length} out of {questions.length}
-          </p>
+        <p className="text-xl mb-8 text-gray-700">
+        Your final score: {correctAnswers} out of {questions.length}
+        </p>
           <button 
             onClick={startNewGame}
             className="px-8 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors font-medium"
