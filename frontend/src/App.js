@@ -7,6 +7,7 @@ import withAuthentication from "./components/withAuthentication";
 import StudySetsPage from "./pages/StudySetsPage";
 import StudySetDetailPage from "./pages/StudySetDetail";
 import StudySessionPage from "./pages/StudySessionPage";
+import QuizPage from "./pages/QuizPage";
 
 const ProtectedUpload = withAuthentication(Upload);
 
@@ -26,6 +27,8 @@ function App() {
             path="/study-set/:studySetId/study-session"
             element={<StudySessionPage />}
           />
+          <Route path="/study-set/:studySetId/quiz" element={<QuizPage />} />
+          <Route path="/quiz/share/:shareableId" element={<QuizPage />} />
         </Routes>
       </div>
     </Router>

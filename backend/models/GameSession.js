@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const gameSessionSchema = new mongoose.Schema({
     studySet: { type: mongoose.Schema.Types.ObjectId, ref: 'StudySet', required: true },
     user: { type: String, required: true },
@@ -21,3 +23,5 @@ const gameSessionSchema = new mongoose.Schema({
   });
   
   const GameSession = mongoose.model('GameSession', gameSessionSchema);
+
+  module.exports = GameSession; 

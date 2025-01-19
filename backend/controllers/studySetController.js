@@ -166,11 +166,18 @@ exports.getStudySessionsForSet = async (req, res) => {
 exports.startQuizMode = async (req, res) => {
   try {
     const { studySetId, user } = req.body;
+    
+    // Validate inputs
+    if (!studySetId || !user?.sub) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
     const quizService = require('../services/quizService');
     const result = await quizService.startQuizMode(studySetId, user.sub);
     
+    // Transform the response to match frontend expectations
     res.status(200).json({
-      gameSession: result.gameSession,
+      gameSession: result.gameSession._id,
       questions: result.questions.map(q => ({
         id: q._id,
         question: q.question,
@@ -179,7 +186,7 @@ exports.startQuizMode = async (req, res) => {
     });
   } catch (error) {
     console.error('Error starting quiz mode:', error);
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: error.message || 'Failed to start quiz' });
   }
 };
 
