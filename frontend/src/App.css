@@ -588,12 +588,25 @@ button:hover {
   font-size: 1rem;
   border-radius: 8px;
   background-color: var(--white);
+  color: var(--heading-color);
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .option-button:hover {
-  background-color: var(--highlight);
+  background-color: var(--highlight) !important;
   border-color: var(--highlight);
   color: white;
   transform: scale(1.05);
+}
+
+.option-button:focus {
+  outline: none; 
+  background-color: var(--white);
+  color: var(--heading-color);
+  border-color: var(--heading-color);
+}
+
+.option-button:active {
+  background-color: var(--white); 
+  color: var(--heading-color); 
 }

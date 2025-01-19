@@ -149,7 +149,14 @@ const QuizGame = ({ studySetId, shareableId }) => {
       if (selectedAnswer === currentQuestion.correctAnswer) {
         setCorrectAnswers(prev => prev + 1);
       }
-  
+
+      // Remove focus from all option buttons
+      document.querySelectorAll('.option-button').forEach(button => {
+        button.blur();
+      });
+
+      // Check if quiz is complete and update question index
+
       if (currentQuestionIndex + 1 >= questions.length) {
         setGameCompleted(true);
       } else {
