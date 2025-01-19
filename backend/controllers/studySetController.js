@@ -181,8 +181,9 @@ exports.startQuizMode = async (req, res) => {
       questions: result.questions.map(q => ({
         id: q._id,
         question: q.question,
-        options: q.options
-      }))
+        options: q.options,
+        correctAnswer: q.correctAnswer
+      })),
     });
   } catch (error) {
     console.error('Error starting quiz mode:', error);
